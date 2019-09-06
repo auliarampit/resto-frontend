@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+import {Provider} from 'react-redux'
+import store from './publics/Store'
+import { Route,BrowserRouter as Router } from 'react-router-dom'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Modal from './components/modal'
+import Home from '../src/screens/Home'
+
+class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      Modal: false
+    }
+  }
+
+  showModal() {
+    this.setState({ Modal: true })
+  }
+  hideModal() {
+    this.setState({ Modal: false })
+  }
+  render() {
+    return (
+      <Provider store={store}>
+        <Router>
+        <Route exact path={'/'} render={()=> <Home show={this.state.showModal} />} />
+        <Route exact path={'/'} render={()=> <Modal show={this.state.showModal} handleClose={this.hideModal} {...this.props} /> } />
+        </Router>
+      </Provider>
+    )
+  }
 }
 
-export default App;
+export default App
